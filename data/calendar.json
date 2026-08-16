@@ -1,0 +1,38 @@
+{
+  "busy_slots": [
+    {
+      "date": "2026-08-17",
+      "slot": "10:00-11:00",
+      "reason": "All-hands meeting"
+    },
+    {
+      "date": "2026-08-18",
+      "slot": "09:00-10:00",
+      "reason": "Sales team standup"
+    },
+    {
+      "date": "2026-08-17",
+      "slot": "11:00-12:00",
+      "reason": "Orientation - EMP001"
+    },
+    {
+      "date": "2026-08-17",
+      "slot": "09:00-10:00",
+      "reason": "Manager 1:1 - EMP001"
+    }
+  ],
+  "bookings": {
+    "EMP001": {
+      "orientation": {
+        "date": "2026-08-17",
+        "slot": "11:00-12:00",
+        "event_id": "orient-emp001"
+      },
+      "manager_1on1": {
+        "date": "2026-08-17",
+        "slot": "09:00-10:00",
+        "event_id": "1on1-emp001"
+      }
+    }
+  }
+}

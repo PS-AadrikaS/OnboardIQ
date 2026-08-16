@@ -1,0 +1,26 @@
+{
+  "EMP001": {
+    "employee_id": "EMP001",
+    "name": "Jane Doe",
+    "role": "Backend Engineer",
+    "department": "Engineering",
+    "start_date": "2026-08-17",
+    "manager": "Alex Kim"
+  },
+  "EMP002": {
+    "employee_id": "EMP002",
+    "name": "Ravi Shah",
+    "role": "Sales Executive",
+    "department": "Sales",
+    "start_date": "2026-08-18",
+    "manager": "Priya Menon"
+  },
+  "EMP003": {
+    "employee_id": "EMP003",
+    "name": "Mei Lin",
+    "role": "HR Coordinator",
+    "department": "Human Resources",
+    "start_date": "2026-08-19",
+    "manager": "Sara Ibanez"
+  }
+}

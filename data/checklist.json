@@ -1,0 +1,46 @@
+{
+  "required_documents": {
+    "default": [
+      "Government ID",
+      "Signed Offer Letter",
+      "Tax Form",
+      "NDA"
+    ],
+    "Engineering": [
+      "Government ID",
+      "Signed Offer Letter",
+      "Tax Form",
+      "NDA",
+      "Security Policy Acknowledgement"
+    ],
+    "Human Resources": [
+      "Government ID",
+      "Signed Offer Letter",
+      "Tax Form",
+      "NDA",
+      "Confidentiality Agreement"
+    ]
+  },
+  "employee_documents": {
+    "EMP001": {
+      "Government ID": "submitted",
+      "Signed Offer Letter": "submitted",
+      "Tax Form": "submitted",
+      "NDA": "submitted",
+      "Security Policy Acknowledgement": "submitted"
+    },
+    "EMP002": {
+      "Government ID": "submitted",
+      "Signed Offer Letter": "submitted",
+      "Tax Form": "submitted",
+      "NDA": "submitted"
+    },
+    "EMP003": {
+      "Government ID": "missing",
+      "Signed Offer Letter": "submitted",
+      "Tax Form": "missing",
+      "NDA": "missing",
+      "Confidentiality Agreement": "missing"
+    }
+  }
+}
