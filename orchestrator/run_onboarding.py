@@ -44,8 +44,20 @@ async def main():
     employee_id = sys.argv[1]
     employee = load_employee(employee_id)
 
-    print(f"Starting onboarding for {employee['name']} ({employee_id})...\n")
-    result = await run_onboarding(employee)
+    print(f"📡 Starting Live Agent Observability Stream for {employee['name']} ({employee_id})...\n")
+
+    def print_live_step(step_entry):
+        action = step_entry.get("action", "")
+        res = step_entry.get("result", {})
+        iter_num = step_entry.get("iteration")
+        model = step_entry.get("model", "")
+        reasoning = step_entry.get("reasoning", "")
+        print(f"[Step {iter_num}] ({model}) -> Tool: {action}")
+        if reasoning:
+            print(f"   Reasoning: {reasoning}")
+        print(f"   Observation: {json.dumps(res)}\n")
+
+    result = await run_onboarding(employee, step_callback=print_live_step)
 
     print(f"\n=== RESULT: {result.status.upper()} ===")
     print(result.summary)
