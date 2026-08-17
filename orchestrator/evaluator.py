@@ -118,7 +118,7 @@ def evaluate_run(run_result) -> EvalReport:
     # Metrics Summary
     total_tokens = sum(c.get("input_tokens", 0) + c.get("output_tokens", 0) for c in cost_log)
     total_seconds = sum(c.get("seconds", 0) for c in cost_log)
-    cheap_calls = sum(1 for c in cost_log if "8b" in c.get("model", "").lower())
+    cheap_calls = sum(1 for c in cost_log if "8b" in c.get("model", "").lower() or "20b" in c.get("model", "").lower())
     cheap_ratio = round(cheap_calls / max(len(cost_log), 1), 2)
 
     report = EvalReport(
