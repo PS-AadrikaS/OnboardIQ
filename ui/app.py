@@ -76,13 +76,12 @@ reset_clicked = st.sidebar.button("🔄 Reset Demo Data", use_container_width=Tr
 if reset_clicked:
     reset_data.main()
     st.session_state.run_result = None
-    st.sidebar.success("Demo data reset to clean baseline.")
+    st.sidebar.success("Demo data reset.")
 
 
 # ---------- main ----------
 
 st.title("Employee Onboarding Dashboard")
-st.caption("Autonomous HR & IT onboarding execution overview.")
 
 if run_clicked:
     st.session_state.run_result = None
@@ -93,13 +92,12 @@ if run_clicked:
             result = run_async(run_onboarding(employee))
             st.session_state.run_result = result
             st.session_state.last_employee_id = employee_id
-            # Silently run evaluation and export report to logs/eval_report.json
             evaluate_run(result)
         except Exception as e:
             st.error(f"Run failed: {e}")
             st.info("Make sure GROQ_API_KEY is configured in your .env file.")
 
-# Always show current ground-truth status cards
+# Ground-truth status cards
 status = run_async(get_employee_status(employee_id))
 
 c1, c2, c3 = st.columns(3)
@@ -110,7 +108,7 @@ with c1:
     st.write(f"Account created: {status_badge(prov['account_created'])}")
     st.write(f"Access assigned: {status_badge(prov['access_assigned'])}")
     if prov["access"]:
-        st.caption("Access granted: " + ", ".join(prov["access"]))
+        st.caption("Access: " + ", ".join(prov["access"]))
 
 with c2:
     st.subheader("📅 Scheduling")
@@ -140,61 +138,47 @@ if result and st.session_state.last_employee_id == employee_id:
     )
     st.write(f"**Executive Summary:** {result.summary}")
 
-    # --- Executive HR Banners ---
-    conflicts_found = []
-    for step in result.decision_log:
-        res = step.get("result", {})
-        if isinstance(res, dict) and res.get("conflict"):
-            conflicts_found.append({
-                "date": res.get("date"),
-                "slot": res.get("slot"),
-                "reason": res.get("reason", "Slot busy")
-            })
-
-    if conflicts_found:
-        st.warning(
-            "⚡ **Automatic Conflict Resolution Triggered!**\n\n"
-            + "\n".join([f"• **Meeting Conflict**: Slot `{c.get('date', '')} {c.get('slot', '')}` was busy ({c.get('reason', 'Busy')}). The system automatically reflected and rescheduled orientation to a free slot!" for c in conflicts_found])
-        )
-
+    # --- Short Executive Banners ---
     if result.status == "escalated":
-        st.info(
-            "📋 **HR Action Required**\n\n"
-            + f"• **Pending Action**: {result.summary}"
-        )
+        st.warning(f"📋 **HR Action Required**: {result.summary}")
     elif result.status == "complete":
-        st.success("🎉 **Automated Onboarding Complete**: All accounts, role access, meetings, and compliance documents have been fully verified!")
+        st.success("🎉 **Automated Onboarding Complete**: All accounts, meetings, and compliance documents verified!")
 
-    st.markdown("---")
-    st.markdown("### 📍 HR Onboarding Timeline")
-    st.caption("Clean, human-readable onboarding progress for HR managers.")
+    st.markdown("### 📍 Milestone Timeline")
 
+    # Milestone filtering (showing key business milestones cleanly)
+    milestones_shown = 0
     for step in result.decision_log:
         action = step.get("action")
         res = step.get("result", {})
 
         if action == "provisioning__create_account":
-            st.success(f"**Step {step['iteration']}** · 👤 **Created System Account** [PASSED] — System ID `{res.get('account_id', 'created')}` generated successfully.")
+            st.success(f"👤 **Account Created**: System ID `{res.get('account_id', 'created')}`")
+            milestones_shown += 1
         elif action == "provisioning__assign_access":
-            access_str = ", ".join(res.get("access", [])) if isinstance(res, dict) and res.get("access") else "role software access"
-            st.success(f"**Step {step['iteration']}** · 🔑 **Assigned Software Access** [PASSED] — Granted permissions for `{access_str}`.")
-        elif action == "scheduling__check_calendar_conflicts":
-            if isinstance(res, dict) and res.get("conflict"):
-                st.warning(f"**Step {step['iteration']}** · ⚡ **Calendar Conflict Detected** [CONFLICT] — Slot `{res.get('date')} {res.get('slot')}` was unavailable due to *{res.get('reason')}*. System is finding a free slot...")
-            else:
-                st.info(f"**Step {step['iteration']}** · 🔍 **Checked Calendar Slot** [AVAILABLE] — Confirmed slot `{res.get('date')} {res.get('slot')}` is open.")
+            access_str = ", ".join(res.get("access", [])) if isinstance(res, dict) and res.get("access") else "software access"
+            st.success(f"🔑 **Software Access Assigned**: `{access_str}`")
+            milestones_shown += 1
+        elif action == "scheduling__check_calendar_conflicts" and isinstance(res, dict) and res.get("conflict"):
+            st.warning(f"⚡ **Calendar Conflict Resolved**: Rescheduled busy slot `{res.get('date')} {res.get('slot')}` ({res.get('reason')})")
+            milestones_shown += 1
         elif action == "scheduling__book_orientation":
-            st.success(f"**Step {step['iteration']}** · 📅 **Booked Orientation Meeting** [PASSED] — Confirmed for `{res.get('date')} {res.get('slot')}`.")
+            st.success(f"📅 **Orientation Booked**: `{res.get('date')} {res.get('slot')}`")
+            milestones_shown += 1
         elif action == "scheduling__book_manager_1on1":
-            st.success(f"**Step {step['iteration']}** · 🤝 **Booked Manager 1:1 Meeting** [PASSED] — Confirmed for `{res.get('date')} {res.get('slot')}`.")
+            st.success(f"🤝 **Manager 1:1 Booked**: `{res.get('date')} {res.get('slot')}`")
+            milestones_shown += 1
         elif action == "compliance__check_document_status":
             if isinstance(res, dict) and res.get("missing_documents"):
-                st.info(f"**Step {step['iteration']}** · 📋 **Compliance Document Check** [ACTION NEEDED] — Pending forms: `{', '.join(res.get('missing_documents'))}`.")
+                st.warning(f"📋 **Compliance Pending**: Missing `{', '.join(res.get('missing_documents'))}`")
             else:
-                st.success(f"**Step {step['iteration']}** · 📋 **Compliance Document Check** [PASSED] — All mandatory onboarding forms are complete!")
+                st.success("📋 **Compliance Passed**: All required documents complete")
+            milestones_shown += 1
         elif action == "control__finish":
-            st.success(f"**Step {step['iteration']}** · ✅ **Onboarding Complete** [FINISHED] — {step.get('input', {}).get('summary', '')}")
+            st.success(f"✅ **Onboarding Finished**: {step.get('input', {}).get('summary', '')}")
+            milestones_shown += 1
         elif action == "control__escalate":
-            st.error(f"**Step {step['iteration']}** · 🚨 **Escalated to HR Review** [ACTION REQUIRED] — Reason: {step.get('input', {}).get('reason', '')}")
+            st.error(f"🚨 **Escalated to HR**: {step.get('input', {}).get('reason', '')}")
+            milestones_shown += 1
 else:
-    st.info("Click **▶️ Start Onboarding** in the sidebar to run the autonomous onboarding workflow for this employee.")
+    st.info("Click **▶️ Start Onboarding** in the sidebar to run the autonomous onboarding workflow.")
