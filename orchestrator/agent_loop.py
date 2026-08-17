@@ -26,8 +26,8 @@ from groq import AsyncGroq
 
 from mcp_hub import MCPHub
 
-CHEAP_MODEL = "llama-3.1-8b-instant"
-EXPENSIVE_MODEL = "llama-3.3-70b-versatile"
+CHEAP_MODEL = "openai/gpt-oss-20b"
+EXPENSIVE_MODEL = "openai/gpt-oss-120b"
 MAX_ITERATIONS = 20
 FAILURE_ESCALATION_THRESHOLD = 1  # escalate after this many tool failures in a row
 

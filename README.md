@@ -1,10 +1,10 @@
 # OnboardIQ
 
-**An agentic multi-agent employee onboarding system**, built with FastMCP, Groq Llama-3 agent loop, and a Streamlit dashboard.
+**An agentic multi-agent employee onboarding system**, built with FastMCP, Groq open-weights agent loop, and a Streamlit dashboard.
 
 Give it one goal — *"onboard this new hire"* — and a goal-based orchestrator agent autonomously plans and executes the entire onboarding process across three specialist agents (Provisioning, Scheduling, Compliance), each running as its own MCP server. It only escalates to a human when something genuinely needs judgment or legal signatures.
 
-See `OnboardIQ_Master_Documentation_v2.docx` for the master design write-up (use case, architecture, agent taxonomy, cost-reduction techniques explained in plain language).
+See `onboardiq_master_documentation.md` for the master design write-up (use case, architecture, agent taxonomy, cost-reduction techniques explained in plain language).
 
 ---
 
@@ -28,7 +28,7 @@ MCP Server     MCP Server    MCP Server
 - **3 self-built MCP servers** (FastMCP), each backed by mock JSON "systems" that behave like a real IT directory, calendar, and HR document tracker.
 - **Cost reduction, 3 techniques:**
   1. Deterministic tool calls (create account, book slot, update checklist) cost zero LLM tokens — the LLM is only used to *decide what to do next*.
-  2. Cheap model (`llama-3.1-8b-instant`) handles routine steps; only escalates to a stronger model (`llama-3.3-70b-versatile`) after a real failure/conflict.
+  2. Cheap model (`openai/gpt-oss-20b`) handles routine steps; only escalates to a stronger model (`openai/gpt-oss-120b`) after a real failure/conflict.
   3. The agent's working memory is a small structured message history, not a growing transcript — so cost per step stays flat regardless of how long a run takes.
 
 ---

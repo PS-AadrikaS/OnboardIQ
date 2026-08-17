@@ -25,3 +25,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Word Documents
+*.docx
+*.doc
