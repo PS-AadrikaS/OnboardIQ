@@ -44,7 +44,7 @@ async def main():
     employee_id = sys.argv[1]
     employee = load_employee(employee_id)
 
-    print(f"📡 Starting Live Agent Observability Stream for {employee['name']} ({employee_id})...\n")
+    print(f"Starting Live Agent Observability Stream for {employee['name']} ({employee_id})...\n")
 
     def print_live_step(step_entry):
         action = step_entry.get("action", "")
