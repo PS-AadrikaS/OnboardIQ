@@ -243,6 +243,7 @@ async def run_onboarding(employee: dict, api_key: str | None = None, step_callba
                 "result": tool_result,
             }
             decision_log.append(step_entry)
+            print(f"📡 [LIVE OBSERVABILITY] Step {iteration} ({model_for_this_step}) -> Tool: {tool_name}\n   Reasoning: {reasoning_text}\n   Observation: {json.dumps(tool_result)}\n")
             if step_callback:
                 step_callback(step_entry)
 
