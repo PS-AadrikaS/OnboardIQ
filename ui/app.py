@@ -127,58 +127,42 @@ with c3:
 
 st.markdown("---")
 
-# ---------- Executive Summary & Timeline ----------
+# ---------- Executive HR Overview ----------
 
 result = st.session_state.run_result
 
 if result and st.session_state.last_employee_id == employee_id:
-    status_color = {"complete": "green", "escalated": "orange", "max_iterations_reached": "red"}
-    st.markdown(
-        f"### Onboarding Status: :{status_color.get(result.status, 'gray')}[{result.status.upper()}]"
-    )
-    st.write(f"**Executive Summary:** {result.summary}")
+    # Check for missing compliance documents
+    missing_docs = status["documents"].get("missing_documents", [])
 
-    # --- Short Executive Banners ---
-    if result.status == "escalated":
-        st.warning(f"📋 **HR Action Required**: {result.summary}")
+    if missing_docs:
+        st.error(
+            f"🔴 **Action Needed — Missing Compliance Paperwork**\n\n"
+            f"The candidate has not submitted the following required legal forms: **{', '.join(missing_docs)}**.\n\n"
+            f"Please collect signed paperwork to finalize onboarding."
+        )
     elif result.status == "complete":
-        st.success("🎉 **Automated Onboarding Complete**: All accounts, meetings, and compliance documents verified!")
+        st.success("🎉 **Automated Onboarding Complete**: Account created, software access granted, orientation & manager 1:1 scheduled!")
 
     st.markdown("### 📍 Milestone Timeline")
 
-    # Milestone filtering (showing key business milestones cleanly)
-    milestones_shown = 0
     for step in result.decision_log:
         action = step.get("action")
         res = step.get("result", {})
 
         if action == "provisioning__create_account":
             st.success(f"👤 **Account Created**: System ID `{res.get('account_id', 'created')}`")
-            milestones_shown += 1
         elif action == "provisioning__assign_access":
             access_str = ", ".join(res.get("access", [])) if isinstance(res, dict) and res.get("access") else "software access"
             st.success(f"🔑 **Software Access Assigned**: `{access_str}`")
-            milestones_shown += 1
-        elif action == "scheduling__check_calendar_conflicts" and isinstance(res, dict) and res.get("conflict"):
-            st.warning(f"⚡ **Calendar Conflict Resolved**: Rescheduled busy slot `{res.get('date')} {res.get('slot')}` ({res.get('reason')})")
-            milestones_shown += 1
         elif action == "scheduling__book_orientation":
             st.success(f"📅 **Orientation Booked**: `{res.get('date')} {res.get('slot')}`")
-            milestones_shown += 1
         elif action == "scheduling__book_manager_1on1":
             st.success(f"🤝 **Manager 1:1 Booked**: `{res.get('date')} {res.get('slot')}`")
-            milestones_shown += 1
         elif action == "compliance__check_document_status":
             if isinstance(res, dict) and res.get("missing_documents"):
-                st.warning(f"📋 **Compliance Pending**: Missing `{', '.join(res.get('missing_documents'))}`")
+                st.warning(f"📋 **Compliance Check**: Pending forms `{', '.join(res.get('missing_documents'))}`")
             else:
-                st.success("📋 **Compliance Passed**: All required documents complete")
-            milestones_shown += 1
-        elif action == "control__finish":
-            st.success(f"✅ **Onboarding Finished**: {step.get('input', {}).get('summary', '')}")
-            milestones_shown += 1
-        elif action == "control__escalate":
-            st.error(f"🚨 **Escalated to HR**: {step.get('input', {}).get('reason', '')}")
-            milestones_shown += 1
+                st.success("📋 **Compliance Check**: All mandatory documents complete")
 else:
     st.info("Click **▶️ Start Onboarding** in the sidebar to run the autonomous onboarding workflow.")
