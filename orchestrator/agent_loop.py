@@ -26,7 +26,7 @@ from groq import AsyncGroq
 
 from mcp_hub import MCPHub
 
-CHEAP_MODEL = "openai/gpt-oss-20b"
+CHEAP_MODEL = "qwen/qwen3.6-27b"
 EXPENSIVE_MODEL = "openai/gpt-oss-120b"
 MAX_ITERATIONS = 20
 FAILURE_ESCALATION_THRESHOLD = 1  # escalate after this many tool failures in a row
@@ -243,7 +243,7 @@ async def run_onboarding(employee: dict, api_key: str | None = None, step_callba
                 "result": tool_result,
             }
             decision_log.append(step_entry)
-            print(f"📡 [LIVE OBSERVABILITY] Step {iteration} ({model_for_this_step}) -> Tool: {tool_name}\n   Reasoning: {reasoning_text}\n   Observation: {json.dumps(tool_result)}\n")
+            print(f"[LIVE OBSERVABILITY] Step {iteration} ({model_for_this_step}) -> Tool: {tool_name}\n   Reasoning: {reasoning_text}\n   Observation: {json.dumps(tool_result)}\n")
             if step_callback:
                 step_callback(step_entry)
 
