@@ -234,6 +234,7 @@ async def run_onboarding(employee: dict, api_key: str | None = None, step_callba
             succeeded = tool_result.get("success", True)  # read-only queries default to success
             consecutive_failures = 0 if succeeded else consecutive_failures + 1
 
+            total_step_tokens = input_tokens + output_tokens
             step_entry = {
                 "iteration": iteration,
                 "model": model_for_this_step,
@@ -241,9 +242,12 @@ async def run_onboarding(employee: dict, api_key: str | None = None, step_callba
                 "action": tool_name,
                 "input": tool_args,
                 "result": tool_result,
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
+                "total_tokens": total_step_tokens,
             }
             decision_log.append(step_entry)
-            print(f"[LIVE OBSERVABILITY] Step {iteration} ({model_for_this_step}) -> Tool: {tool_name}\n   Reasoning: {reasoning_text}\n   Observation: {json.dumps(tool_result)}\n")
+            print(f"[LIVE OBSERVABILITY] Step {iteration} ({model_for_this_step}) -> Tool: {tool_name}\n   Tokens Used: {total_step_tokens} ({input_tokens} in / {output_tokens} out)\n   Reasoning: {reasoning_text}\n   Observation: {json.dumps(tool_result)}\n")
             if step_callback:
                 step_callback(step_entry)
 

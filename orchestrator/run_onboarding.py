@@ -52,7 +52,10 @@ async def main():
         iter_num = step_entry.get("iteration")
         model = step_entry.get("model", "")
         reasoning = step_entry.get("reasoning", "")
-        print(f"[Step {iter_num}] ({model}) -> Tool: {action}")
+        in_tok = step_entry.get("input_tokens", 0)
+        out_tok = step_entry.get("output_tokens", 0)
+        tot_tok = step_entry.get("total_tokens", 0)
+        print(f"[Step {iter_num}] ({model}) -> Tool: {action} | Tokens: {tot_tok} ({in_tok} in / {out_tok} out)")
         if reasoning:
             print(f"   Reasoning: {reasoning}")
         print(f"   Observation: {json.dumps(res)}\n")
