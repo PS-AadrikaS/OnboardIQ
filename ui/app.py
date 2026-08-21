@@ -31,9 +31,9 @@ st.set_page_config(page_title="OnboardIQ | Product Squads AI Labs", page_icon="ð
 # ---------- Custom Purple & White CSS Theme ----------
 st.markdown("""
 <style>
-    /* Global Background & Fonts */
+    /* Global Elegant Light Purple Background */
     .stApp {
-        background-color: #FAFAFC;
+        background-color: #F5EEFF !important;
     }
     
     /* Headers & Title */
