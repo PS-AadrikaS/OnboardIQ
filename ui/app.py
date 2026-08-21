@@ -1,5 +1,5 @@
 """
-OnboardIQ - Streamlit Dashboard (Product Squads Official Website Banner Edition)
+OnboardIQ - Streamlit Dashboard (Top Rectangular Banner Edition)
 
 Run with:  streamlit run ui/app.py
 """
@@ -28,79 +28,24 @@ UI_DIR = Path(__file__).resolve().parent
 
 st.set_page_config(page_title="OnboardIQ | Product Squads AI Labs", page_icon="🧭", layout="wide")
 
-# ---------- Custom Product Squads Website Theme & Top Navbar CSS ----------
+# ---------- Custom CSS to make Banner start from VERY TOPMOST TOP ----------
 st.markdown("""
 <style>
+    /* Remove default top padding so image sits at VERY TOPMOST TOP */
+    .block-container {
+        padding-top: 0rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
     /* Global Background & Fonts */
     .stApp {
         background-color: #FAFAFC;
     }
     
-    /* Official Dark Purple Header Navbar Banner */
-    .ps-navbar {
-        background-color: #241235;
-        padding: 14px 30px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 20px rgba(36, 18, 53, 0.15);
-    }
-    
-    .ps-nav-left {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .ps-logo-text {
-        color: white;
-        font-weight: 800;
-        font-size: 1.25rem;
-        letter-spacing: 1px;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-    
-    .ps-logo-sub {
-        color: #A78BFA;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 2px;
-        display: block;
-    }
-    
-    .ps-nav-links {
-        display: flex;
-        gap: 24px;
-        align-items: center;
-    }
-    
-    .ps-nav-link {
-        color: #E9D5FF !important;
-        text-decoration: none !important;
-        font-weight: 500;
-        font-size: 0.9rem;
-        transition: color 0.2s ease;
-    }
-    .ps-nav-link:hover {
-        color: #FFFFFF !important;
-    }
-    
-    .ps-btn-expert {
-        background-color: #FFFFFF !important;
-        color: #241235 !important;
-        padding: 8px 18px;
-        border-radius: 6px;
-        text-decoration: none !important;
-        font-weight: 700;
-        font-size: 0.85rem;
-        transition: all 0.2s ease;
-    }
-    .ps-btn-expert:hover {
-        background-color: #F3E8FF !important;
-        color: #1E0E2E !important;
-        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    /* Top Banner Image Styling */
+    div[data-testid="stImage"] > img {
+        border-radius: 0px 0px 16px 16px !important;
+        box-shadow: 0 6px 20px rgba(76, 29, 149, 0.15) !important;
     }
     
     /* Headers & Title */
@@ -134,6 +79,35 @@ st.markdown("""
     div[data-testid="stMetricValue"] {
         color: #7C3AED !important;
     }
+    
+    /* Link Badges */
+    .linkedin-badge {
+        background: #0077B5;
+        color: white !important;
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+    .linkedin-badge:hover {
+        background: #005582;
+        color: white !important;
+    }
+    
+    .link-badge {
+        background: #7C3AED;
+        color: white !important;
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+    .link-badge:hover {
+        background: #6D28D9;
+        color: white !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -161,6 +135,13 @@ if "last_employee_id" not in st.session_state:
     st.session_state.last_employee_id = None
 
 
+# ---------- VERY TOPMOST RECTANGULAR BANNER ----------
+
+banner_path = UI_DIR / "productsquads_official_banner.jpg"
+if banner_path.exists():
+    st.image(str(banner_path), use_container_width=True)
+
+
 # ---------- sidebar ----------
 
 logo_path = UI_DIR / "productsquads_logo.png"
@@ -174,11 +155,11 @@ st.sidebar.caption("Product Squads Autonomous AI Engine")
 
 st.sidebar.markdown(
     """
-    <a href="https://www.linkedin.com/company/productsquads/" target="_blank" style="background:#0077B5; color:white; padding:6px 12px; border-radius:20px; text-decoration:none; font-weight:600; font-size:0.8rem;">
+    <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
         🔗 LinkedIn Page
     </a>
     &nbsp;
-    <a href="https://productsquads.co/" target="_blank" style="background:#7C3AED; color:white; padding:6px 12px; border-radius:20px; text-decoration:none; font-weight:600; font-size:0.8rem;">
+    <a href="https://productsquads.co/" target="_blank" class="link-badge">
         🌐 Website
     </a>
     """,
@@ -209,35 +190,26 @@ if reset_clicked:
     st.sidebar.success("Demo data reset.")
 
 
-# ---------- Official Product Squads Dark Purple Header Navbar Banner ----------
+# ---------- main title section ----------
 
-st.markdown(
-    """
-    <div class="ps-navbar">
-        <div class="ps-nav-left">
-            <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#7C3AED"/>
-                <path d="M35 30H55C65 30 70 36 70 45C70 54 65 60 55 60H45V75H35V30Z" fill="white"/>
-            </svg>
-            <div>
-                <span class="ps-logo-text">PRODUCT SQUADS</span>
-                <span class="ps-logo-sub">AI ENGINEERING & TRANSFORMATION</span>
-            </div>
-        </div>
-        <div class="ps-nav-links">
-            <a href="https://productsquads.co/" target="_blank" class="ps-nav-link">What We Do</a>
-            <a href="https://productsquads.co/" target="_blank" class="ps-nav-link">Why ProductSquads</a>
-            <a href="https://productsquads.co/" target="_blank" class="ps-nav-link">Capabilities</a>
-            <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="ps-nav-link">LinkedIn</a>
-            <a href="https://productsquads.co/" target="_blank" class="ps-btn-expert">Talk to our Data & AI Expert</a>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+h1, h2 = st.columns([3, 1])
 
-st.title("Employee Onboarding Dashboard")
-st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
+with h1:
+    st.title("Employee Onboarding Dashboard")
+    st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
+
+with h2:
+    st.markdown("<br/>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div style="text-align: right;">
+            <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
+                🔗 Follow on LinkedIn
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 
