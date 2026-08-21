@@ -1,5 +1,5 @@
 """
-OnboardIQ - Streamlit Dashboard (Product Squads Enterprise Edition)
+OnboardIQ - Streamlit Dashboard (Product Squads Enterprise Purple Edition)
 
 Run with:  streamlit run ui/app.py
 """
@@ -24,8 +24,78 @@ sys.path.insert(0, str(ROOT_DIR))
 import reset_data
 
 DATA_DIR = ROOT_DIR / "data"
+UI_DIR = Path(__file__).resolve().parent
 
-st.set_page_config(page_title="OnboardIQ | Product Squads", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="OnboardIQ | Product Squads AI Labs", page_icon="🧭", layout="wide")
+
+# ---------- Custom Purple & White CSS Theme ----------
+st.markdown("""
+<style>
+    /* Main Theme Colors */
+    :root {
+        --primary-purple: #6B46C1;
+        --light-purple: #F3E8FF;
+        --dark-purple: #4C1D95;
+        --border-purple: #DDD6FE;
+    }
+    
+    /* Headers & Title */
+    h1, h2, h3 {
+        color: #4C1D95 !important;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Buttons */
+    .stButton>button {
+        background-color: #6B46C1 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+    .stButton>button:hover {
+        background-color: #5B21B6 !important;
+        box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3) !important;
+    }
+    
+    /* Sidebar styling */
+    section[data-testid="stSidebar"] {
+        background-color: #FAF5FF !important;
+        border-right: 1px solid #E9D5FF !important;
+    }
+    
+    /* Status Cards */
+    div[data-testid="stMetricValue"] {
+        color: #6B46C1 !important;
+    }
+    
+    .status-card {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        border: 1px solid #E9D5FF;
+        box-shadow: 0 2px 8px rgba(107, 70, 193, 0.05);
+    }
+    
+    /* LinkedIn Badge */
+    .linkedin-badge {
+        background: #0077B5;
+        color: white !important;
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-block;
+        margin-top: 5px;
+    }
+    .linkedin-badge:hover {
+        background: #005582;
+        color: white !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 # ---------- helpers ----------
@@ -57,8 +127,16 @@ st.sidebar.title("🧭 OnboardIQ")
 st.sidebar.caption("Powered by **Product Squads** AI Labs")
 
 st.sidebar.markdown(
-    "[🔗 Product Squads LinkedIn](https://www.linkedin.com/company/productsquads/)  \n"
-    "[🌐 Visit Product Squads](https://productsquads.co/)"
+    """
+    <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
+        🔗 LinkedIn: Product Squads
+    </a>
+    <br/><br/>
+    <a href="https://productsquads.co/" target="_blank" style="color: #6B46C1; font-weight: 600; text-decoration: none;">
+        🌐 Visit Website: productsquads.co
+    </a>
+    """,
+    unsafe_allow_html=True
 )
 st.sidebar.markdown("---")
 
@@ -86,6 +164,11 @@ if reset_clicked:
 
 
 # ---------- main ----------
+
+# Display Product Squads AI Labs Banner
+banner_path = UI_DIR / "product_squads_banner.jpg"
+if banner_path.exists():
+    st.image(str(banner_path), use_container_width=True)
 
 st.title("Employee Onboarding Dashboard")
 st.caption("Product Squads Autonomous HR & IT Execution Engine")
@@ -195,13 +278,29 @@ if result and st.session_state.last_employee_id == employee_id:
 else:
     st.info("Click **▶️ Start Onboarding** in the sidebar to run the autonomous onboarding workflow.")
 
+# ---------- AI Product Video Showcase Section ----------
+st.markdown("---")
+st.markdown("### 🎬 Product Squads AI Overview Video")
+st.caption("Learn how Product Squads builds autonomous enterprise AI agents.")
+
+video_file = UI_DIR / "demo_video.mp4"
+if video_file.exists():
+    st.video(str(video_file))
+else:
+    st.info(
+        "📹 **AI Video Showcase Placeholder**: Add your AI-generated mp4 video to `ui/demo_video.mp4` "
+        "or replace this with your video URL using `st.video('https://your-video-url.mp4')`!"
+    )
+
 # ---------- Footer: Product Squads ----------
 st.markdown("---")
 st.markdown(
-    "<div style='text-align: center; color: #64748B; font-size: 0.85rem; padding: 10px;'>"
-    "🚀 Built for <b>Product Squads</b> Enterprise AI Solutions · "
-    "<a href='https://www.linkedin.com/company/productsquads/' target='_blank'>LinkedIn</a> · "
-    "<a href='https://productsquads.co/' target='_blank'>Website</a>"
-    "</div>",
+    """
+    <div style='text-align: center; color: #4C1D95; font-size: 0.9rem; padding: 15px; background: #FAF5FF; border-radius: 10px; border: 1px solid #E9D5FF;'>
+        🚀 Built for <b>Product Squads</b> Enterprise AI Solutions · 
+        <a href='https://www.linkedin.com/company/productsquads/' target='_blank' style='color: #6B46C1; font-weight: 600;'>LinkedIn</a> · 
+        <a href='https://productsquads.co/' target='_blank' style='color: #6B46C1; font-weight: 600;'>Website</a>
+    </div>
+    """,
     unsafe_allow_html=True
 )
