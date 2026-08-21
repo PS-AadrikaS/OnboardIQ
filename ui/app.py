@@ -42,13 +42,14 @@ st.markdown("""
         background-color: #FAFAFC;
     }
     
-    /* Top Banner Image Styling (Ultra-Slim Rectangular Header) */
+    /* Top Banner Image Styling (Exact Flat Rectangular Header) */
     div[data-testid="stImage"] > img {
-        max-height: 90px !important;
+        max-height: 80px !important;
         object-fit: cover !important;
         object-position: center 25% !important;
-        border-radius: 0px 0px 12px 12px !important;
-        box-shadow: 0 4px 12px rgba(76, 29, 149, 0.12) !important;
+        border-radius: 0px !important;
+        box-shadow: none !important;
+        margin-bottom: 10px !important;
     }
     
     /* Headers & Title */
