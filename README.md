@@ -1,6 +1,6 @@
 # OnboardIQ
 
-**An agentic multi-agent employee onboarding system**, built with FastMCP, Groq open-weights agent loop, and a Streamlit dashboard.
+**A Goal-Based Autonomous Employee Onboarding Agent System**, built with FastMCP, Groq open-weights agent loop, and a Streamlit dashboard.
 
 Give it one goal — *"onboard this new hire"* — and a goal-based orchestrator agent autonomously plans and executes the entire onboarding process across three specialist agents (Provisioning, Scheduling, Compliance), each running as its own MCP server. It only escalates to a human when something genuinely needs judgment or legal signatures.
 
@@ -24,7 +24,7 @@ MCP Server     MCP Server    MCP Server
  access)        1:1 booking)  checklist)
 ```
 
-- **4 agents total:** 1 goal-based orchestrator + 3 model-based reflex specialist agents.
+- **Architecture:** 1 Goal-Based Autonomous Orchestrator Agent coordinating 3 specialist FastMCP tool servers (Provisioning, Scheduling, Compliance).
 - **3 self-built MCP servers** (FastMCP), each backed by mock JSON "systems" that behave like a real IT directory, calendar, and HR document tracker.
 - **Cost reduction, 3 techniques:**
   1. Deterministic tool calls (create account, book slot, update checklist) cost zero LLM tokens — the LLM is only used to *decide what to do next*.
