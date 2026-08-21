@@ -1,5 +1,5 @@
 """
-OnboardIQ - Streamlit Dashboard (HR Executive Edition)
+OnboardIQ - Streamlit Dashboard (Product Squads Enterprise Edition)
 
 Run with:  streamlit run ui/app.py
 """
@@ -25,7 +25,7 @@ import reset_data
 
 DATA_DIR = ROOT_DIR / "data"
 
-st.set_page_config(page_title="OnboardIQ", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="OnboardIQ | Product Squads", page_icon="🧭", layout="wide")
 
 
 # ---------- helpers ----------
@@ -54,7 +54,13 @@ if "last_employee_id" not in st.session_state:
 # ---------- sidebar ----------
 
 st.sidebar.title("🧭 OnboardIQ")
-st.sidebar.caption("Agentic Multi-Agent Employee Onboarding")
+st.sidebar.caption("Powered by **Product Squads** AI Labs")
+
+st.sidebar.markdown(
+    "[🔗 Product Squads LinkedIn](https://www.linkedin.com/company/productsquads/)  \n"
+    "[🌐 Visit Product Squads](https://productsquads.co/)"
+)
+st.sidebar.markdown("---")
 
 employees = load_employees()
 employee_id = st.sidebar.selectbox(
@@ -82,7 +88,9 @@ if reset_clicked:
 # ---------- main ----------
 
 st.title("Employee Onboarding Dashboard")
+st.caption("Product Squads Autonomous HR & IT Execution Engine")
 
+# Ground-truth status cards
 if run_clicked:
     st.session_state.run_result = None
     st.session_state.last_employee_id = employee_id
@@ -92,12 +100,10 @@ if run_clicked:
             result = run_async(run_onboarding(employee))
             st.session_state.run_result = result
             st.session_state.last_employee_id = employee_id
-            evaluate_run(result)
         except Exception as e:
             st.error(f"Run failed: {e}")
             st.info("Make sure GROQ_API_KEY is configured in your .env file.")
 
-# Ground-truth status cards
 status = run_async(get_employee_status(employee_id))
 
 c1, c2, c3 = st.columns(3)
@@ -127,12 +133,11 @@ with c3:
 
 st.markdown("---")
 
-# ---------- Executive HR Overview ----------
+# ---------- Executive HR Overview & Timeline ----------
 
 result = st.session_state.run_result
 
 if result and st.session_state.last_employee_id == employee_id:
-    # Check for missing compliance documents
     missing_docs = status["documents"].get("missing_documents", [])
 
     if missing_docs:
@@ -164,5 +169,39 @@ if result and st.session_state.last_employee_id == employee_id:
                 st.warning(f"📋 **Compliance Check**: Pending forms `{', '.join(res.get('missing_documents'))}`")
             else:
                 st.success("📋 **Compliance Check**: All mandatory documents complete")
+
+    # ---------- Agent Evaluation Metrics Section (At Bottom) ----------
+    st.markdown("---")
+    st.markdown("### 📊 Agent Evaluation Metrics")
+    st.caption("Quantitative benchmark metrics evaluated automatically for this run.")
+
+    eval_report = evaluate_run(result)
+
+    e1, e2, e3, e4 = st.columns(4)
+    e1.metric("Task Success Rate", f"{int(eval_report.task_success_rate * 100)}%")
+    e2.metric("Tool Selection Accuracy", f"{int(eval_report.tool_selection_accuracy * 100)}%")
+    e3.metric("Trajectory Accuracy", f"{int(eval_report.trajectory_accuracy * 100)}%")
+    e4.metric("Conflict Recovery Rate", f"{int(eval_report.conflict_recovery_rate * 100)}%")
+
+    e5, e6, e7, e8 = st.columns(4)
+    e5.metric("Groundedness Score", f"{int(eval_report.groundedness_score * 100)}%")
+    e6.metric("Latency", f"{eval_report.latency_seconds}s")
+    e7.metric("Total Tokens", f"{eval_report.total_tokens:,}")
+    e8.metric("Cheap Model Ratio", f"{int(eval_report.cheap_model_ratio * 100)}%")
+
+    with st.expander("📋 View Evaluation Findings Audit"):
+        for finding in eval_report.findings:
+            st.markdown(f"• {finding}")
 else:
     st.info("Click **▶️ Start Onboarding** in the sidebar to run the autonomous onboarding workflow.")
+
+# ---------- Footer: Product Squads ----------
+st.markdown("---")
+st.markdown(
+    "<div style='text-align: center; color: #64748B; font-size: 0.85rem; padding: 10px;'>"
+    "🚀 Built for <b>Product Squads</b> Enterprise AI Solutions · "
+    "<a href='https://www.linkedin.com/company/productsquads/' target='_blank'>LinkedIn</a> · "
+    "<a href='https://productsquads.co/' target='_blank'>Website</a>"
+    "</div>",
+    unsafe_allow_html=True
+)
