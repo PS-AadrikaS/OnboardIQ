@@ -1,5 +1,5 @@
 """
-OnboardIQ - Streamlit Dashboard (Product Squads Enterprise Edition)
+OnboardIQ - Streamlit Dashboard (Product Squads Official Banner Edition)
 
 Run with:  streamlit run ui/app.py
 """
@@ -26,7 +26,7 @@ import reset_data
 DATA_DIR = ROOT_DIR / "data"
 UI_DIR = Path(__file__).resolve().parent
 
-st.set_page_config(page_title="OnboardIQ | Product Squads", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="OnboardIQ | Product Squads AI Labs", page_icon="🧭", layout="wide")
 
 # ---------- Custom Purple & White Real-Website CSS Theme ----------
 st.markdown("""
@@ -70,20 +70,7 @@ st.markdown("""
         color: #7C3AED !important;
     }
     
-    /* Top Header Bar */
-    .header-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: white;
-        padding: 12px 24px;
-        border-radius: 12px;
-        border: 1px solid #E9D5FF;
-        box-shadow: 0 2px 10px rgba(124, 58, 237, 0.06);
-        margin-bottom: 20px;
-    }
-    
-    /* LinkedIn & Website Badges */
+    /* Link Badges */
     .link-badge {
         background: #7C3AED;
         color: white !important;
@@ -187,15 +174,17 @@ if reset_clicked:
     st.sidebar.success("Demo data reset.")
 
 
-# ---------- main top header bar ----------
+# ---------- main top official banner ----------
+
+banner_path = UI_DIR / "productsquads_official_banner.jpg"
+if banner_path.exists():
+    st.image(str(banner_path), use_container_width=True)
 
 h1, h2 = st.columns([3, 1])
 
 with h1:
-    if logo_path.exists():
-        st.image(str(logo_path), width=240)
     st.title("Employee Onboarding Dashboard")
-    st.caption("Autonomous HR & IT Execution Engine by Product Squads")
+    st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
 
 with h2:
     st.markdown("<br/>", unsafe_allow_html=True)
