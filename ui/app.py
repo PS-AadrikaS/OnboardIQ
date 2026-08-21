@@ -1,5 +1,5 @@
 """
-OnboardIQ - Streamlit Dashboard (Product Squads Official Banner Edition)
+OnboardIQ - Streamlit Dashboard (Product Squads Official Website Banner Edition)
 
 Run with:  streamlit run ui/app.py
 """
@@ -28,76 +28,111 @@ UI_DIR = Path(__file__).resolve().parent
 
 st.set_page_config(page_title="OnboardIQ | Product Squads AI Labs", page_icon="🧭", layout="wide")
 
-# ---------- Custom Purple & White Real-Website CSS Theme ----------
+# ---------- Custom Product Squads Website Theme & Top Navbar CSS ----------
 st.markdown("""
 <style>
-    /* Main Theme Colors */
-    :root {
-        --primary-purple: #7C3AED;
-        --light-purple: #F3E8FF;
-        --dark-purple: #4C1D95;
-        --border-purple: #DDD6FE;
+    /* Global Background & Fonts */
+    .stApp {
+        background-color: #FAFAFC;
+    }
+    
+    /* Official Dark Purple Header Navbar Banner */
+    .ps-navbar {
+        background-color: #241235;
+        padding: 14px 30px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 20px rgba(36, 18, 53, 0.15);
+    }
+    
+    .ps-nav-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .ps-logo-text {
+        color: white;
+        font-weight: 800;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    
+    .ps-logo-sub {
+        color: #A78BFA;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        display: block;
+    }
+    
+    .ps-nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+    }
+    
+    .ps-nav-link {
+        color: #E9D5FF !important;
+        text-decoration: none !important;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+    }
+    .ps-nav-link:hover {
+        color: #FFFFFF !important;
+    }
+    
+    .ps-btn-expert {
+        background-color: #FFFFFF !important;
+        color: #241235 !important;
+        padding: 8px 18px;
+        border-radius: 6px;
+        text-decoration: none !important;
+        font-weight: 700;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+    }
+    .ps-btn-expert:hover {
+        background-color: #F3E8FF !important;
+        color: #1E0E2E !important;
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
     }
     
     /* Headers & Title */
     h1, h2, h3 {
-        color: #4C1D95 !important;
+        color: #241235 !important;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
     
-    /* Buttons */
+    /* Primary Action Buttons */
     .stButton>button {
         background-color: #7C3AED !important;
         color: white !important;
         border-radius: 8px !important;
         border: none !important;
         font-weight: 600 !important;
+        padding: 10px 20px !important;
         transition: all 0.3s ease !important;
     }
     .stButton>button:hover {
         background-color: #6D28D9 !important;
-        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3) !important;
+        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35) !important;
     }
     
-    /* Sidebar styling */
+    /* Sidebar Styling */
     section[data-testid="stSidebar"] {
-        background-color: #FAF5FF !important;
+        background-color: #F7F5FC !important;
         border-right: 1px solid #E9D5FF !important;
     }
     
     /* Status Metrics */
     div[data-testid="stMetricValue"] {
         color: #7C3AED !important;
-    }
-    
-    /* Link Badges */
-    .link-badge {
-        background: #7C3AED;
-        color: white !important;
-        padding: 6px 14px;
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: background 0.2s ease;
-    }
-    .link-badge:hover {
-        background: #6D28D9;
-        color: white !important;
-    }
-    
-    .linkedin-badge {
-        background: #0077B5;
-        color: white !important;
-        padding: 6px 14px;
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-    .linkedin-badge:hover {
-        background: #005582;
-        color: white !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -131,7 +166,7 @@ if "last_employee_id" not in st.session_state:
 logo_path = UI_DIR / "productsquads_logo.png"
 
 if logo_path.exists():
-    st.sidebar.image(str(logo_path), width=220)
+    st.sidebar.image(str(logo_path), width=200)
 else:
     st.sidebar.title("🧭 OnboardIQ")
 
@@ -139,11 +174,11 @@ st.sidebar.caption("Product Squads Autonomous AI Engine")
 
 st.sidebar.markdown(
     """
-    <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
+    <a href="https://www.linkedin.com/company/productsquads/" target="_blank" style="background:#0077B5; color:white; padding:6px 12px; border-radius:20px; text-decoration:none; font-weight:600; font-size:0.8rem;">
         🔗 LinkedIn Page
     </a>
     &nbsp;
-    <a href="https://productsquads.co/" target="_blank" class="link-badge">
+    <a href="https://productsquads.co/" target="_blank" style="background:#7C3AED; color:white; padding:6px 12px; border-radius:20px; text-decoration:none; font-weight:600; font-size:0.8rem;">
         🌐 Website
     </a>
     """,
@@ -174,30 +209,35 @@ if reset_clicked:
     st.sidebar.success("Demo data reset.")
 
 
-# ---------- main top official banner ----------
+# ---------- Official Product Squads Dark Purple Header Navbar Banner ----------
 
-banner_path = UI_DIR / "productsquads_official_banner.jpg"
-if banner_path.exists():
-    st.image(str(banner_path), use_container_width=True)
-
-h1, h2 = st.columns([3, 1])
-
-with h1:
-    st.title("Employee Onboarding Dashboard")
-    st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
-
-with h2:
-    st.markdown("<br/>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div style="text-align: right;">
-            <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
-                🔗 Follow on LinkedIn
-            </a>
+st.markdown(
+    """
+    <div class="ps-navbar">
+        <div class="ps-nav-left">
+            <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#7C3AED"/>
+                <path d="M35 30H55C65 30 70 36 70 45C70 54 65 60 55 60H45V75H35V30Z" fill="white"/>
+            </svg>
+            <div>
+                <span class="ps-logo-text">PRODUCT SQUADS</span>
+                <span class="ps-logo-sub">AI ENGINEERING & TRANSFORMATION</span>
+            </div>
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+        <div class="ps-nav-links">
+            <a href="https://productsquads.co/" target="_blank" class="ps-nav-link">What We Do</a>
+            <a href="https://productsquads.co/" target="_blank" class="ps-nav-link">Why ProductSquads</a>
+            <a href="https://productsquads.co/" target="_blank" class="ps-nav-link">Capabilities</a>
+            <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="ps-nav-link">LinkedIn</a>
+            <a href="https://productsquads.co/" target="_blank" class="ps-btn-expert">Talk to our Data & AI Expert</a>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.title("Employee Onboarding Dashboard")
+st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
 
 st.markdown("---")
 
@@ -324,7 +364,7 @@ else:
 st.markdown("---")
 st.markdown(
     """
-    <div style='text-align: center; color: #4C1D95; font-size: 0.9rem; padding: 15px; background: #FAF5FF; border-radius: 10px; border: 1px solid #E9D5FF;'>
+    <div style='text-align: center; color: #241235; font-size: 0.9rem; padding: 15px; background: #FAF5FF; border-radius: 10px; border: 1px solid #E9D5FF;'>
         🚀 Built for <b>Product Squads</b> Enterprise AI Solutions · 
         <a href='https://www.linkedin.com/company/productsquads/' target='_blank' style='color: #7C3AED; font-weight: 600;'>LinkedIn</a> · 
         <a href='https://productsquads.co/' target='_blank' style='color: #7C3AED; font-weight: 600;'>Website</a>
