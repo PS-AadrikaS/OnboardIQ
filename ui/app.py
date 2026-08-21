@@ -1,5 +1,5 @@
 """
-OnboardIQ - Streamlit Dashboard (Product Squads Official Purple Banner Edition)
+OnboardIQ - Streamlit Dashboard (Product Squads Enterprise Edition)
 
 Run with:  streamlit run ui/app.py
 """
@@ -68,33 +68,56 @@ st.markdown("""
         color: #7C3AED !important;
     }
     
-    /* Link Badges */
-    .linkedin-badge {
+    /* Link Badges below Banner */
+    .banner-badge-linkedin {
         background: #0077B5;
         color: white !important;
-        padding: 6px 14px;
+        padding: 8px 16px;
         border-radius: 20px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.88rem;
+        display: inline-block;
+        transition: all 0.2s ease;
     }
-    .linkedin-badge:hover {
+    .banner-badge-linkedin:hover {
         background: #005582;
         color: white !important;
+        box-shadow: 0 4px 12px rgba(0, 119, 181, 0.3);
     }
     
-    .link-badge {
+    .banner-badge-website {
         background: #7C3AED;
         color: white !important;
-        padding: 6px 14px;
+        padding: 8px 16px;
         border-radius: 20px;
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.88rem;
+        display: inline-block;
+        transition: all 0.2s ease;
     }
-    .link-badge:hover {
+    .banner-badge-website:hover {
         background: #6D28D9;
         color: white !important;
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+    
+    .banner-badge-video {
+        background: #4C1D95;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 20px;
+        text-decoration: none !important;
+        font-weight: 600;
+        font-size: 0.88rem;
+        display: inline-block;
+        transition: all 0.2s ease;
+    }
+    .banner-badge-video:hover {
+        background: #3B1566;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(76, 29, 149, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -121,31 +144,14 @@ if "run_result" not in st.session_state:
     st.session_state.run_result = None
 if "last_employee_id" not in st.session_state:
     st.session_state.last_employee_id = None
+if "show_video" not in st.session_state:
+    st.session_state.show_video = False
 
 
 # ---------- sidebar ----------
 
-logo_path = UI_DIR / "productsquads_logo.png"
-
-if logo_path.exists():
-    st.sidebar.image(str(logo_path), width=200)
-else:
-    st.sidebar.title("🧭 OnboardIQ")
-
-st.sidebar.caption("Product Squads Autonomous AI Engine")
-
-st.sidebar.markdown(
-    """
-    <a href="https://www.linkedin.com/company/productsquadss/" target="_blank" class="linkedin-badge">
-        🔗 LinkedIn Page
-    </a>
-    &nbsp;
-    <a href="https://productsquads.co/" target="_blank" class="link-badge">
-        🌐 Website
-    </a>
-    """,
-    unsafe_allow_html=True
-)
+st.sidebar.title("🧭 OnboardIQ")
+st.sidebar.caption("Agentic Autonomous Employee Onboarding Engine")
 st.sidebar.markdown("---")
 
 employees = load_employees()
@@ -190,7 +196,7 @@ else:
 
 st.markdown(
     f"""
-    <div style="background: linear-gradient(90deg, #3B1566 0%, #4C1D95 50%, #2E1065 100%); padding: 16px 24px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; box-shadow: 0 4px 14px rgba(59, 21, 102, 0.2);">
+    <div style="background: linear-gradient(90deg, #3B1566 0%, #4C1D95 50%, #2E1065 100%); padding: 16px 24px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(59, 21, 102, 0.2);">
         <div style="display: flex; align-items: center; gap: 14px;">
             {icon_img_html}
             <div>
@@ -206,24 +212,26 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-h1, h2 = st.columns([3, 1])
+# ---------- Action Buttons directly below Purple Banner ----------
+st.markdown(
+    """
+    <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 20px;">
+        <a href="https://www.linkedin.com/company/productsquadss/" target="_blank" class="banner-badge-linkedin">
+            🔗 LinkedIn Page
+        </a>
+        <a href="https://productsquads.co/" target="_blank" class="banner-badge-website">
+            🌐 Visit Website
+        </a>
+        <a href="#video-showcase" class="banner-badge-video">
+            🎬 See How We Work
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-with h1:
-    st.title("Employee Onboarding Dashboard")
-    st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
-
-with h2:
-    st.markdown("<br/>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div style="text-align: right;">
-            <a href="https://www.linkedin.com/company/productsquadss/" target="_blank" class="linkedin-badge">
-                🔗 Follow on LinkedIn
-            </a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+st.title("Employee Onboarding Dashboard")
+st.caption("Autonomous HR & IT Execution Engine by Product Squads AI Labs")
 
 st.markdown("---")
 
@@ -334,7 +342,8 @@ else:
 
 # ---------- AI Product Video Showcase Section ----------
 st.markdown("---")
-st.markdown("### 🎬 Product Squads AI Overview Video")
+st.markdown("<div id='video-showcase'></div>", unsafe_allow_html=True)
+st.markdown("### 🎬 Product Squads AI Overview Video — See How We Work")
 st.caption("Autonomous Enterprise AI Agent System by Product Squads")
 
 video_file = UI_DIR / "demo_video.mp4"
