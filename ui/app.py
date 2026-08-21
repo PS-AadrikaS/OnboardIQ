@@ -33,23 +33,8 @@ st.markdown("""
 <style>
     /* Remove default top padding so image sits at VERY TOPMOST TOP */
     .block-container {
-        padding-top: 0rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 2rem !important;
-    }
-    
-    /* Global Background & Fonts */
-    .stApp {
-        background-color: #FAFAFC;
-    }
-    
-    /* Top Banner Image Styling (Exact Flat Rectangular Header) */
-    div[data-testid="stImage"] > img {
-        max-height: 80px !important;
-        object-fit: cover !important;
-        object-position: center 25% !important;
-        border-radius: 0px !important;
-        box-shadow: none !important;
-        margin-bottom: 10px !important;
     }
     
     /* Headers & Title */
@@ -139,11 +124,6 @@ if "last_employee_id" not in st.session_state:
     st.session_state.last_employee_id = None
 
 
-# ---------- VERY TOPMOST RECTANGULAR BANNER ----------
-
-banner_path = UI_DIR / "productsquads_official_banner.jpg"
-if banner_path.exists():
-    st.image(str(banner_path), use_container_width=True)
 
 
 # ---------- sidebar ----------
