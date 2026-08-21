@@ -173,14 +173,26 @@ if reset_clicked:
 
 # ---------- OFFICIAL PURPLE BANNER ABOVE DASHBOARD TITLE ----------
 
-st.markdown(
+import base64
+
+icon_path = UI_DIR / "ps_icon.png"
+if icon_path.exists():
+    with open(icon_path, "rb") as f:
+        icon_b64 = base64.b64encode(f.read()).decode("utf-8")
+    icon_img_html = f'<img src="data:image/png;base64,{icon_b64}" style="height: 44px; width: auto; vertical-align: middle; border-radius: 6px;"/>'
+else:
+    icon_img_html = """
+    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#7C3AED"/>
+        <path d="M35 30H55C65 30 70 36 70 45C70 54 65 60 55 60H45V75H35V30Z" fill="white"/>
+    </svg>
     """
-    <div style="background: linear-gradient(90deg, #3B1566 0%, #4C1D95 50%, #2E1065 100%); padding: 18px 24px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; box-shadow: 0 4px 14px rgba(59, 21, 102, 0.2);">
+
+st.markdown(
+    f"""
+    <div style="background: linear-gradient(90deg, #3B1566 0%, #4C1D95 50%, #2E1065 100%); padding: 16px 24px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; box-shadow: 0 4px 14px rgba(59, 21, 102, 0.2);">
         <div style="display: flex; align-items: center; gap: 14px;">
-            <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#A78BFA"/>
-                <path d="M35 30H55C65 30 70 36 70 45C70 54 65 60 55 60H45V75H35V30Z" fill="white"/>
-            </svg>
+            {icon_img_html}
             <div>
                 <span style="color: white; font-weight: 800; font-size: 1.3rem; letter-spacing: 0.5px; font-family: sans-serif; display: block; line-height: 1.1;">Product Squads</span>
                 <span style="color: #DDD6FE; font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; display: block;">AI LABS</span>
