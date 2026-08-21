@@ -136,7 +136,7 @@ st.sidebar.caption("Product Squads Autonomous AI Engine")
 
 st.sidebar.markdown(
     """
-    <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
+    <a href="https://www.linkedin.com/company/productsquadss/" target="_blank" class="linkedin-badge">
         🔗 LinkedIn Page
     </a>
     &nbsp;
@@ -217,7 +217,7 @@ with h2:
     st.markdown(
         """
         <div style="text-align: right;">
-            <a href="https://www.linkedin.com/company/productsquads/" target="_blank" class="linkedin-badge">
+            <a href="https://www.linkedin.com/company/productsquadss/" target="_blank" class="linkedin-badge">
                 🔗 Follow on LinkedIn
             </a>
         </div>
@@ -352,7 +352,7 @@ st.markdown(
     """
     <div style='text-align: center; color: #241235; font-size: 0.9rem; padding: 15px; background: #FAF5FF; border-radius: 10px; border: 1px solid #E9D5FF;'>
         🚀 Built for <b>Product Squads</b> Enterprise AI Solutions · 
-        <a href='https://www.linkedin.com/company/productsquads/' target='_blank' style='color: #7C3AED; font-weight: 600;'>LinkedIn</a> · 
+        <a href='https://www.linkedin.com/company/productsquadss/' target='_blank' style='color: #7C3AED; font-weight: 600;'>LinkedIn</a> · 
         <a href='https://productsquads.co/' target='_blank' style='color: #7C3AED; font-weight: 600;'>Website</a>
     </div>
     """,
