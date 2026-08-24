@@ -60,10 +60,11 @@ def evaluate_run(run_result) -> EvalReport:
         "control__escalate",
     }
 
-    total_actions = len(decision_log)
-    correct_actions = sum(1 for step in decision_log if step.get("action") in valid_tools)
-    tool_selection_accuracy = round(correct_actions / max(total_actions, 1), 2)
-    findings.append(f"🎯 Tool Selection Accuracy: {int(tool_selection_accuracy * 100)}% ({correct_actions}/{total_actions} valid tool calls).")
+    tool_steps = [step for step in decision_log if step.get("action") is not None]
+    total_tool_calls = len(tool_steps)
+    correct_actions = sum(1 for step in tool_steps if step.get("action") in valid_tools)
+    tool_selection_accuracy = round(correct_actions / max(total_tool_calls, 1), 2)
+    findings.append(f"🎯 Tool Selection Accuracy: {int(tool_selection_accuracy * 100)}% ({correct_actions}/{total_tool_calls} valid tool calls).")
 
     # 3. Trajectory & Prerequisite Dependency Accuracy
     actions_list = [step.get("action") for step in decision_log]
