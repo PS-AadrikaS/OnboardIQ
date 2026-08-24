@@ -69,9 +69,11 @@ async def main():
     for step in result.decision_log:
         print(f"[{step['iteration']}] ({step['model']}) action={step['action']}")
         if step.get("reasoning"):
-            print(f"    reasoning: {step['reasoning']}")
+            clean_reasoning = str(step['reasoning']).encode('ascii', 'ignore').decode('ascii')
+            print(f"    reasoning: {clean_reasoning}")
         if "result" in step:
-            print(f"    result: {step['result']}")
+            clean_res = str(step['result']).encode('ascii', 'ignore').decode('ascii')
+            print(f"    result: {clean_res}")
 
     total_input = sum(c["input_tokens"] for c in result.cost_log)
     total_output = sum(c["output_tokens"] for c in result.cost_log)
