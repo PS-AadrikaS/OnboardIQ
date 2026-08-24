@@ -145,9 +145,10 @@ async def run_onboarding(employee: dict, api_key: str | None = None, step_callba
                     temperature=0.1,
                 )
             except Exception as err:
-                if "429" in str(err) or "rate_limit" in str(err).lower():
-                    fallback_model = "openai/gpt-oss-20b" if model_for_this_step != "openai/gpt-oss-20b" else "openai/gpt-oss-120b"
-                    print(f"[RATE LIMIT FALLBACK] {model_for_this_step} hit 429 limit. Retrying automatically with {fallback_model}...")
+                err_str = str(err).lower()
+                if "429" in err_str or "rate_limit" in err_str or "output_parse_failed" in err_str or "parsing failed" in err_str:
+                    fallback_model = EXPENSIVE_MODEL
+                    print(f"[FALLBACK RECOVERY] {model_for_this_step} error. Retrying automatically with {fallback_model}...")
                     model_for_this_step = fallback_model
                     response = await client.chat.completions.create(
                         model=model_for_this_step,

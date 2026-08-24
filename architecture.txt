@@ -1,0 +1,59 @@
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           ONBOARDIQ SYSTEM ARCHITECTURE                          │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                              [ User Goal Prompt ]
+                       "Onboard EMP001 (Jane Doe)"
+                                      │
+                                      ▼
+             ┌─────────────────────────────────────────────────┐
+             │       Streamlit Web Dashboard (ui/app.py)       │
+             │   • Real-Time Status Cards & HR Timeline        │
+             │   • 📡 Live Agent Observability Stream          │
+             └────────────────────────┬────────────────────────┘
+                                      │
+                                      ▼
+             ┌─────────────────────────────────────────────────┐
+             │    Goal-Based Orchestrator Agent (agent_loop)    │
+             │  • ReAct Loop: Reason → Act → Observe → Reflect │
+             │  • Dual-Model Tiered Escalation (20B <-> 120B)  │
+             └────────────────────────┬────────────────────────┘
+                                      │
+                                      ▼
+             ┌─────────────────────────────────────────────────┐
+             │          MCP Client Hub (mcp_hub.py)            │
+             │   • Spawns Subprocesses over stdio transport    │
+             │   • Collects 10 MCP Tools into Unified Palette  │
+             └───────┬────────────────┬────────────────┬───────┘
+                     │                │                │
+       stdio transport       stdio transport       stdio transport
+                     │                │                │
+                     ▼                ▼                ▼
+     ┌───────────────────────┐┌───────────────┐┌─────────────────────┐
+     │  Provisioning Server  ││  Scheduling   ││  Compliance Server  │
+     │ FastMCP (3 IT Tools)  ││ Server (4)    ││ FastMCP (3 Legal)   │
+     └───────────┬───────────┘└───────┬───────┘└──────────┬──────────┘
+                 │                    │                   │
+                 ▼                    ▼                   ▼
+     ┌───────────────────────┐┌───────────────┐┌─────────────────────┐
+     │ provisioning_state.json││ calendar.json ││   checklist.json    │
+     │  (Accounts & Access)  ││ (Bookings)    ││  (Legal Documents)  │
+     └───────────────────────┘└───────────────┘└─────────────────────┘
+
+
+
+     [User clicks " Start Onboarding" on UI (ui/app.py)]
+                          │
+                          ▼
+[app.py calls run_onboarding(employee) in agent_loop.py]
+                          │
+                          ▼
+[agent_loop.py constructs System Prompt & User Goal Prompt]
+                          │
+                          ▼
+[MCPHub spawns 3 FastMCP Servers over stdio & collects 10 Tool Schemas]
+                          │
+                          ▼
+[Groq API Call: client.chat.completions.create(messages, tools)]
+                          │
+                          ▼
+[Groq returns Turn 1 Tool Choice (provisioning__create_account)]
