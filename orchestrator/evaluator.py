@@ -113,7 +113,7 @@ def evaluate_run(run_result) -> EvalReport:
         res = step.get("result", {})
         if res and not (isinstance(res, dict) and res.get("error")):
             grounded_steps += 1
-    groundedness_score = round(grounded_steps / max(total_actions, 1), 2)
+    groundedness_score = round(grounded_steps / max(len(decision_log), 1), 2)
     findings.append(f"⚓ Groundedness Score: {int(groundedness_score * 100)}% (Tool outputs strictly grounded in backend JSON storage).")
 
     # Metrics Summary
