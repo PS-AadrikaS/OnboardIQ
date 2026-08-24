@@ -136,13 +136,29 @@ async def run_onboarding(employee: dict, api_key: str | None = None, step_callba
             model_for_this_step = EXPENSIVE_MODEL if consecutive_failures >= FAILURE_ESCALATION_THRESHOLD else CHEAP_MODEL
 
             start = time.time()
-            response = await client.chat.completions.create(
-                model=model_for_this_step,
-                messages=messages,
-                tools=all_tools,
-                tool_choice="auto",
-                temperature=0.1,
-            )
+            try:
+                response = await client.chat.completions.create(
+                    model=model_for_this_step,
+                    messages=messages,
+                    tools=all_tools,
+                    tool_choice="auto",
+                    temperature=0.1,
+                )
+            except Exception as err:
+                if "429" in str(err) or "rate_limit" in str(err).lower():
+                    fallback_model = "openai/gpt-oss-20b" if model_for_this_step != "openai/gpt-oss-20b" else "openai/gpt-oss-120b"
+                    print(f"[RATE LIMIT FALLBACK] {model_for_this_step} hit 429 limit. Retrying automatically with {fallback_model}...")
+                    model_for_this_step = fallback_model
+                    response = await client.chat.completions.create(
+                        model=model_for_this_step,
+                        messages=messages,
+                        tools=all_tools,
+                        tool_choice="auto",
+                        temperature=0.1,
+                    )
+                else:
+                    raise err
+
             elapsed = round(time.time() - start, 2)
 
             usage = response.usage
