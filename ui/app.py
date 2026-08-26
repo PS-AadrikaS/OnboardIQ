@@ -322,19 +322,17 @@ if result and st.session_state.last_employee_id == employee_id:
 
     eval_report = evaluate_run(result)
 
-    e1, e2, e3, e4, e5 = st.columns(5)
-    e1.metric("Task Success", f"{int(eval_report.task_success_rate * 100)}%")
-    e2.metric("Tool Selection", f"{int(eval_report.tool_selection_accuracy * 100)}%")
-    e3.metric("Trajectory Acc.", f"{int(eval_report.trajectory_accuracy * 100)}%")
-    e4.metric("Conflict Recovery", f"{int(eval_report.conflict_recovery_rate * 100)}%")
-    e5.metric("Groundedness", f"{int(eval_report.groundedness_score * 100)}%")
+    e1, e2, e3, e4 = st.columns(4)
+    e1.metric("Task Success Rate", f"{int(eval_report.task_success_rate * 100)}%")
+    e2.metric("Tool Selection Accuracy", f"{int(eval_report.tool_selection_accuracy * 100)}%")
+    e3.metric("Trajectory Accuracy", f"{int(eval_report.trajectory_accuracy * 100)}%")
+    e4.metric("Conflict Recovery Rate", f"{int(eval_report.conflict_recovery_rate * 100)}%")
 
-    e6, e7, e8, e9, e10 = st.columns(5)
-    e6.metric("Faithfulness", f"{int(eval_report.faithfulness * 100)}%")
-    e7.metric("Answer Relevance", f"{int(eval_report.answer_relevance * 100)}%")
-    e8.metric("Latency", f"{eval_report.latency_seconds}s")
-    e9.metric("Total Tokens", f"{eval_report.total_tokens:,}")
-    e10.metric("Cheap Model Ratio", f"{int(eval_report.cheap_model_ratio * 100)}%")
+    e5, e6, e7, e8 = st.columns(4)
+    e5.metric("Groundedness Score", f"{int(eval_report.groundedness_score * 100)}%")
+    e6.metric("Latency", f"{eval_report.latency_seconds}s")
+    e7.metric("Total Tokens", f"{eval_report.total_tokens:,}")
+    e8.metric("Cheap Model Ratio", f"{int(eval_report.cheap_model_ratio * 100)}%")
 
     with st.expander("📋 View Evaluation Findings Audit"):
         for finding in eval_report.findings:

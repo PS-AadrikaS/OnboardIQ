@@ -1,6 +1,6 @@
 """
 OnboardIQ Agent Evaluation Framework.
-Evaluates agent trajectory, tool selection accuracy, conflict recovery, groundedness, faithfulness, answer relevance, and efficiency.
+Evaluates agent trajectory, tool selection accuracy, conflict recovery, groundedness, and efficiency.
 """
 import json
 from dataclasses import dataclass, field
@@ -14,8 +14,6 @@ class EvalReport:
     trajectory_accuracy: float       # 0.0 to 1.0
     conflict_recovery_rate: float    # 0.0 to 1.0
     groundedness_score: float        # 0.0 to 1.0
-    faithfulness: float              # 0.0 to 1.0
-    answer_relevance: float          # 0.0 to 1.0
     latency_seconds: float
     total_tokens: int
     cheap_model_ratio: float         # 0.0 to 1.0
@@ -118,15 +116,6 @@ def evaluate_run(run_result) -> EvalReport:
     groundedness_score = round(grounded_steps / max(len(decision_log), 1), 2)
     findings.append(f"⚓ Groundedness Score: {int(groundedness_score * 100)}% (Tool outputs strictly grounded in backend JSON storage).")
 
-    # 6. Faithfulness (Grounded in context facts without hallucinations)
-    faithfulness = groundedness_score
-    findings.append(f"🛡️ Faithfulness: {int(faithfulness * 100)}% (Agent reasoning strictly faithful to backend state without hallucinations).")
-
-    # 7. Answer Relevance (Directly addressing onboarding goal)
-    relevant_actions = sum(1 for step in tool_steps if step.get("action") in valid_tools)
-    answer_relevance = round(relevant_actions / max(total_tool_calls, 1), 2)
-    findings.append(f"🎯 Answer Relevance: {int(answer_relevance * 100)}% (All tool actions directly fulfill onboarding sub-goals).")
-
     # Metrics Summary
     total_tokens = sum(c.get("input_tokens", 0) + c.get("output_tokens", 0) for c in cost_log)
     total_seconds = sum(c.get("seconds", 0) for c in cost_log)
@@ -140,8 +129,6 @@ def evaluate_run(run_result) -> EvalReport:
         trajectory_accuracy=trajectory_accuracy,
         conflict_recovery_rate=conflict_recovery_rate,
         groundedness_score=groundedness_score,
-        faithfulness=faithfulness,
-        answer_relevance=answer_relevance,
         latency_seconds=round(total_seconds, 2),
         total_tokens=total_tokens,
         cheap_model_ratio=cheap_ratio,
@@ -160,8 +147,6 @@ def evaluate_run(run_result) -> EvalReport:
             "trajectory_accuracy": report.trajectory_accuracy,
             "conflict_recovery_rate": report.conflict_recovery_rate,
             "groundedness_score": report.groundedness_score,
-            "faithfulness": report.faithfulness,
-            "answer_relevance": report.answer_relevance,
             "latency_seconds": report.latency_seconds,
             "total_tokens": report.total_tokens,
             "cheap_model_ratio": report.cheap_model_ratio,
